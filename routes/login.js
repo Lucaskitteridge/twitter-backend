@@ -26,7 +26,10 @@ module.exports = (db) => {
       .then(response => {
         if (response.rows[0]) {
           console.log("we found a user match!");
-          res.send(response.rows);
+          let rightname = response.rows[0];
+          req.session.user_id = rightname['id'];
+          res.json(rightname['id']);
+          return res.redirect('/');
         } else {
           console.log("dont exist!");
           res.send("WRONG COMBO");

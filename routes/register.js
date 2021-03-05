@@ -36,9 +36,10 @@ module.exports = (db) => {
       RETURNING *;
     `, [username, password])
             .then(response => {
-              req.session.user_id = response.rows;
-              res.send(response.rows[0]);
-
+              let rightname = response.rows[0];
+              req.session.user_id = rightname['id'];
+              return res.json(rightname['id']);
+              // res.redirect('/');
             })
             .catch(e => {
               console.log(e);
