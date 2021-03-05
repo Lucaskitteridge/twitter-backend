@@ -38,7 +38,7 @@ module.exports = (db) => {
             .then(response => {
               let rightname = response.rows[0];
               req.session.userId = rightname['id'];
-              return res.json(rightname['id']);
+              return res.send(rightname['id']);
               // res.redirect('/');
             })
             .catch(e => {
