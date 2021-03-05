@@ -29,7 +29,7 @@ module.exports = (db) => {
     FROM users 
     WHERE username = $1;`, [username])
       .then(response => {
-        if (response.rows.length === 0) {
+        if (!response.rows.length) {
           return db.query(`
       INSERT INTO users (username, password)
       VALUES($1, $2)
