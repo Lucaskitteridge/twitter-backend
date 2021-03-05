@@ -23,10 +23,12 @@ app.use(cookieSession({
 const registerRoutes = require("./routes/register");
 const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
+const tweetsRoutes = require('./routes/tweets');
 
 app.use("/register", registerRoutes(pool));
 app.use("/login", loginRoutes(pool));
 app.use("/logout", logoutRoutes(pool));
+app.use("/tweets", tweetsRoutes(pool));
 
 
 app.get("/", (req, res) => {
