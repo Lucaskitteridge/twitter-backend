@@ -17,34 +17,22 @@ pool.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
   name: 'session',
-  keys: ["Dont go chasing waterfalls"]
+  keys: ['Hello there']
 }));
 
 const registerRoutes = require("./routes/register");
 const loginRoutes = require('./routes/login');
+const logoutRoutes = require('./routes/logout');
 
 app.use("/register", registerRoutes(pool));
 app.use("/login", loginRoutes(pool));
-
-const tweetDatabase = {
-  "1": {
-    "user_id": "1",
-    "tweet": "Hello world"
-  },
-  "2": {
-    "user_id": "1",
-    "tweet": "Goodbye"
-  }
-};
+app.use("/logout", logoutRoutes(pool));
 
 
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
-app.get("/tweets", (req, res) => {
-  res.send({ tweets: tweetDatabase });
-});
 
 // module.exports = (db) => {
 

@@ -20,6 +20,11 @@ module.exports = (db) => {
     let username = req.body['username'];
     let password = req.body['password'];
 
+    if (username === '' || password === '') {
+      res.send('username or password cannot be blank');
+      return;
+    }
+
     db.query(`SELECT * 
     FROM users 
     WHERE username = $1;`, [username])
@@ -31,13 +36,15 @@ module.exports = (db) => {
       RETURNING *;
     `, [username, password])
             .then(response => {
-              res.send(response.rows);
+              req.session.user_id = response.rows;
+              res.send(response.rows[0]);
+
             })
             .catch(e => {
               console.log(e);
             });
         }
-        res.send(response.rows[0]);
+        res.send("user already exists in database");
       });
   });
 
