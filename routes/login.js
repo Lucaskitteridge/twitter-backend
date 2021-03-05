@@ -27,7 +27,7 @@ module.exports = (db) => {
         if (response.rows[0]) {
           console.log("we found a user match!");
           let rightname = response.rows[0];
-          req.session.user_id = rightname['id'];
+          req.session.userId = rightname['id'];
           res.json(rightname['id']);
           return res.redirect('/');
         } else {

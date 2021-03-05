@@ -5,9 +5,9 @@ module.exports = (db) => {
 
   router.post("/", (req, res) => {
 
-    req.session.user_id = null;
+    req.session.userId = null;
 
-    res.send(req.session.user_id);
+    res.send(req.session.userId);
 
   });
 

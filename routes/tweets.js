@@ -47,7 +47,7 @@ module.exports = (db) => {
     let tweetId = req.body['tweetId'];
 
     return db.query(`
-      DELETE tweets (content)
+      DELETE tweets (tweet_id)
       WHERE id = $1
       RETURNING *;
     `, [tweetId]);
