@@ -17,19 +17,27 @@ module.exports = (db) => {
 
   router.post("/", (req, res) => {
 
-    let name = req.body.name;
-    let password = req.body.password;
+    let username = req.body['username'];
+    let password = req.body['password'];
 
-    return db.query(`
-      INSERT INTO users (name, password)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
-      RETURNING *;
-    `, [name, password])
+    db.query(`SELECT * 
+    FROM users 
+    WHERE username = $1;`, [username])
       .then(response => {
-        res.send(response)
-      })
-      .catch(e => {
-        response.send(e);
+        if (response.rows.length === 0) {
+          return db.query(`
+      INSERT INTO users (username, password)
+      VALUES($1, $2)
+      RETURNING *;
+    `, [username, password])
+            .then(response => {
+              res.send(response.rows);
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        }
+        res.send(response.rows[0]);
       });
   });
 

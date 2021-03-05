@@ -1,5 +1,5 @@
-INSERT INTO users (name, password)
+INSERT INTO users (username, password)
 VALUES 
-('John Smith', 'password'),
-('Lucas Kitteridge', 'hello'),
-('Jane Doe', 'lol')
+('JohnSmith', 'password'),
+('LucasKitteridge', 'hello'),
+('JaneDoe', 'lol')

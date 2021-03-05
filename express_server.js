@@ -1,21 +1,30 @@
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
-const bcrypt = require('bcrypt');
-const router = express.Router();
 const app = express();
 const PORT = 8080; // default port 8080
 
 const { Pool } = require('pg');
-const dbParams = require('./lib/db.js');
-const db = new Pool(dbParams);
-db.connect();
+
+const pool = new Pool({
+  user: 'labber',
+  password: 'labber',
+  host: 'localhost',
+  database: 'twitterclone'
+});
+pool.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
   name: 'session',
   keys: ["Dont go chasing waterfalls"]
 }));
+
+const registerRoutes = require("./routes/register");
+const loginRoutes = require('./routes/login');
+
+app.use("/register", registerRoutes(pool));
+app.use("/login", loginRoutes(pool));
 
 const tweetDatabase = {
   "1": {
@@ -28,18 +37,6 @@ const tweetDatabase = {
   }
 };
 
-const users = {
-  "1": {
-    id: "1",
-    name: "LucasK",
-    password: "hello"
-  },
-  "2": {
-    id: "2",
-    name: "jesseL",
-    password: "thatsmean"
-  }
-};
 
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -48,6 +45,51 @@ app.get("/", (req, res) => {
 app.get("/tweets", (req, res) => {
   res.send({ tweets: tweetDatabase });
 });
+
+// module.exports = (db) => {
+
+//   router.post("/login", (req, res) => {
+
+//     let name = req.body.username;
+//     let password = req.body.password;
+
+//     return db.query(`
+//       INSERT INTO users (name, password)
+//       VALUES($1, $2)
+//       RETURNING *;
+//     `, [name, password,])
+//       .then(response => {
+//         console.log(response);
+//         res.send(response);
+//       })
+//       .catch(e => {
+//         console.log(e);
+//       });
+//   });
+//   return router;
+// };
+
+// app.post("/register", (req, res) => {
+
+//   const newId = generateRandomString();
+//   if (req.body["name"] === '' || req.body["password"] === '') {
+//     res.status(404);
+//     res.send("name or password field is blank");
+//   }
+//   //checking if email already exists
+//   for (let ids in users) {
+//     if (users[ids].name === req.body["name"]) {
+//       res.status(404);
+//       res.send("Account already exists for that name");
+//     }
+//   }
+//   const name = req.body["name"];
+//   const password = req.body["password"];
+//   const newIdObject = {newId, name, password};
+//   users[newId] = newIdObject;
+//   req.session.userId = users[newId];
+//   res.send(newIdObject);
+// });
 
 // app.post("/login", (req, res) => {
 //   const name = req.body["name"];
