@@ -1,22 +1,26 @@
-const chai = require("chai");
-const chaiHttp = require("chai-http");
-const expect = chai.expect;
-const baseUrl = "localhost:8080";
-chai.use(chaiHttp);
-describe("Register User API Unit Test", function() {
-  let newUser = {
-    "username": "user100",
-    "password": "password"
-  };
-  it('registers a user', function(done) {
-    chai.request(baseUrl)
-      .post('/register')
-      .send(newUser)
-      .end(function(err, res) {
-        console.log(err);
-        expect(res).to.have.status(200);
-        expect(res.text).to.equal(`${newUser.username} created successfully!`);
-        done();
-      });
+const { assert } = require('chai');
+require('dotenv').config();
+const { Pool } = require('pg');
+const dbParams = require('../lib/db');
+const db = new Pool(dbParams);
+db.connect();
+
+describe('Login user', function () {
+  it('should return a user if user exists in db', function () {
+    let username = 'JohnSmith';
+    let password = "password";
+    let expectedOutput = 1;
+    db.query(`
+      SELECT * FROM users
+      WHERE username = $1 AND password = $2;
+    `, [username, password]);
+    assert.equal(db.query(`
+    SELECT * FROM users
+    WHERE username = $1 AND password = $2;
+  `, [username, password]), expectedOutput);
+  });
+  it('if email does not exist it should return undefined', function () {
+    const user = getUserByEmail("hellothere@example.com", testUsers);
+    assert.isUndefined(user);
   });
 });

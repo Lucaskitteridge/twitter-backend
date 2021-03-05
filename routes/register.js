@@ -40,7 +40,6 @@ module.exports = (db) => {
               req.session["userName"] = userName;
               res.send(`${userName} created successfully!`);
               return response.rows[0] ? response.rows[0] : null;
-              // res.redirect('/');
             })
             .catch(e => {
               res

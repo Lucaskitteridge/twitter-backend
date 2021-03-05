@@ -1,6 +1,7 @@
 const express = require("express");
 require('dotenv').config();
 const cookieSession = require('cookie-session');
+const postman = require('postman');
 const bodyParser = require("body-parser");
 const app = express();
 const PORT = 8080; // default port 8080
