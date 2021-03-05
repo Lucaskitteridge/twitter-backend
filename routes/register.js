@@ -36,13 +36,16 @@ module.exports = (db) => {
       RETURNING *;
     `, [username, password])
             .then(response => {
-              let rightname = response.rows[0];
-              req.session.userId = rightname['id'];
-              return res.send(rightname['id']);
+              let userName = response.rows[0].username;
+              req.session["userName"] = userName;
+              res.send(`${userName} created successfully!`);
+              return response.rows[0] ? response.rows[0] : null;
               // res.redirect('/');
             })
             .catch(e => {
-              console.log(e);
+              res
+                .status(500)
+                .json({ error: e.message });
             });
         }
         res.send("user already exists in database");
