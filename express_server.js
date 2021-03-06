@@ -21,11 +21,13 @@ const registerRoutes = require("./routes/register");
 const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
 const tweetsRoutes = require('./routes/tweets');
+const usersRoutes = require('./routes/users');
 
 app.use("/register", registerRoutes(db));
 app.use("/login", loginRoutes(db));
 app.use("/logout", logoutRoutes(db));
 app.use("/tweets", tweetsRoutes(db));
+app.use("/users", usersRoutes(db));
 
 app.get("/", (req, res) => {
   res.send("Hello!");
