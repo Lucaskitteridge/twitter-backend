@@ -24,9 +24,9 @@ module.exports = (db) => {
       RETURNING *;
     `, [username, password])
             .then(response => {
-              let userName = response.rows[0].username;
-              req.session["userName"] = userName;
-              res.send(`${userName} created successfully!`);
+              let rightname = response.rows[0];
+              req.session.userId = rightname['id'];
+              res.send("Sucess added user");
               return response.rows[0] ? response.rows[0] : null;
             })
             .catch(e => {

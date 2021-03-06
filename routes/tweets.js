@@ -19,7 +19,7 @@ module.exports = (db) => {
   router.post("/", (req, res) => {
 
     let content = req.body['content'];
-    let userId = req.session.userId;
+    let userId = req.session["userId"];
 
     return db.query(`
       INSERT INTO tweets (content, user_id)
@@ -35,7 +35,7 @@ module.exports = (db) => {
   router.put("/", (req, res) => {
 
     let content = req.body['content'];
-    let userId = req.session.userId;
+    let userId = req.session["userId"];
 
     return db.query(`
       UPDATE tweets (content, user_id)
@@ -52,7 +52,7 @@ module.exports = (db) => {
 
   router.delete("/", (req, res) => {
 
-    let tweetId = req.session.userId;
+    let tweetId = req.session["userId"];
 
     return db.query(`
       DELETE tweets (tweet_id)
